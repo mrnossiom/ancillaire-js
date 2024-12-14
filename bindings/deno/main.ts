@@ -4,6 +4,7 @@ const {
   symbols: {
     ancillaire_version,
     ancillaire_send_fd,
+    ancillaire_recv_fd,
   },
 } = Deno.dlopen(
   libPath,
@@ -13,6 +14,7 @@ const {
       result: "pointer",
     },
     ancillaire_send_fd: { parameters: ["i32", "i32"], result: "i32" },
+    ancillaire_recv_fd: { parameters: ["i32"], result: "i32" },
   } as const,
 );
 
@@ -25,6 +27,13 @@ function version(): string {
 function sendFd(socket_fd: number, fd: number) {
   const result = ancillaire_send_fd(socket_fd, fd);
   if (result < 0) throw new Error(`got errno error from ancillaire_send_fd: ${-result}`);
+}
+
+function recvFd(socket_fd: number): number {
+  const result = ancillaire_recv_fd(socket_fd);
+  if (result < 0) throw new Error(`got errno error from ancillaire_send_fd: ${-result}`);
+
+  return result;
 }
 
 // ---

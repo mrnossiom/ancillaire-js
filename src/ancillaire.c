@@ -81,7 +81,7 @@ int ancillaire_recv_fd(int socket_fd) {
   msgh.msg_controllen = sizeof(control_msg.buf);
 
   if (recvmsg(socket_fd, &msgh, 0) == -1)
-    return -1;
+    return -errno;
 
   cmsgp = CMSG_FIRSTHDR(&msgh);
   assert(cmsgp->cmsg_len == CMSG_LEN(sizeof(int)));
@@ -89,7 +89,7 @@ int ancillaire_recv_fd(int socket_fd) {
   if (cmsgp == NULL || cmsgp->cmsg_len != CMSG_LEN(sizeof(int)) ||
       cmsgp->cmsg_level != SOL_SOCKET || cmsgp->cmsg_type != SCM_RIGHTS) {
     errno = EINVAL;
-    return -1;
+    return -132;
   }
 
   memcpy(&fd, CMSG_DATA(cmsgp), sizeof(int));
