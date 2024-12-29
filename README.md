@@ -1,3 +1,7 @@
+This project is archived and deprecated. You can check [jhs67/usocket](https://github.com/jhs67/usocket) if you want to interact with UNIX domain sockets in NodeJS.
+
+---
+
 # Ancillary messages JS bindings
 
 <p align="center"><strong>
